@@ -1,0 +1,453 @@
+{
+  "identificacion": {
+    "corrida_id": "corrida_03",
+    "fecha_ejecucion": "2026-08-27",
+    "archivo_procesado": "MASTER_AGOSTO_2026.xlsx",
+    "version_contrato": "v3",
+    "periodo_informado": "2026-07-31",
+    "fecha_comunicacion": "2026-08-10",
+    "informacion_auditada_hasta": "2026-03-31",
+    "linea_base_estructural": "MASTER_MARZO_2026.xlsx, aprobado después de la corrida 2",
+    "entrada": {
+      "archivo_master": "MASTER_AGOSTO_2026.xlsx",
+      "archivo_linea_base": "MASTER_MARZO_2026.xlsx",
+      "hoja_principal": "RESUMEN TOTAL",
+      "celda_periodo": "A18",
+      "estructura_relevante": "MASTER vigente: provincias J:R, incluida La Pampa; total de cabezas en S con fórmula SUM(J:R). Las cantidades operativas de esta evidencia están normalizadas a la precisión de presentación definida en v3.",
+      "resumen_datos": [
+        {
+          "entidad": "Fondo A",
+          "fila_referencia": 6,
+          "fondos_fideicomitidos": 9580487004,
+          "valor_cp": 9.58,
+          "variacion_mensual": 0.0109,
+          "ytd": 0.0742,
+          "granos_toneladas": 0,
+          "cabezas_total": 4818,
+          "provincias_incluidas": [
+            "Córdoba",
+            "Entre Ríos",
+            "Santiago del Estero",
+            "La Pampa",
+            "Buenos Aires"
+          ]
+        },
+        {
+          "entidad": "Fondo B - Serie I",
+          "fila_referencia": 8,
+          "fondos_fideicomitidos": 7639611693,
+          "valor_cp": 9.632,
+          "variacion_mensual": 0.0102,
+          "ytd": 0.0377,
+          "granos_toneladas": 2376,
+          "cabezas_total": 2848,
+          "provincias_incluidas": [
+            "Entre Ríos",
+            "Santiago del Estero",
+            "Buenos Aires"
+          ]
+        },
+        {
+          "entidad": "Fondo B - Serie II",
+          "fila_referencia": 9,
+          "fondos_fideicomitidos": 17800392362,
+          "valor_cp": 8.279,
+          "variacion_mensual": 0.0112,
+          "ytd": 0.027,
+          "granos_toneladas": 7042,
+          "cabezas_total": 8245,
+          "provincias_incluidas": [
+            "Corrientes",
+            "Córdoba",
+            "Santa Fe",
+            "Entre Ríos",
+            "San Luis",
+            "Santiago del Estero",
+            "La Pampa",
+            "Buenos Aires"
+          ]
+        },
+        {
+          "entidad": "Fondo B - Serie III",
+          "fila_referencia": 10,
+          "fondos_fideicomitidos": 10577837344,
+          "valor_cp": 3.526,
+          "variacion_mensual": 0.0134,
+          "ytd": 0.0483,
+          "granos_toneladas": 2549,
+          "cabezas_total": 4049,
+          "provincias_incluidas": [
+            "Salta",
+            "Corrientes",
+            "Córdoba",
+            "Santa Fe",
+            "Entre Ríos",
+            "Buenos Aires"
+          ]
+        },
+        {
+          "entidad": "Fondo B - Serie IV",
+          "fila_referencia": 11,
+          "fondos_fideicomitidos": 9003075757,
+          "valor_cp": 1.979,
+          "variacion_mensual": 0.01,
+          "ytd": 0.0397,
+          "granos_toneladas": 1796,
+          "cabezas_total": 4650,
+          "provincias_incluidas": [
+            "Salta",
+            "Corrientes",
+            "Córdoba",
+            "Santa Fe",
+            "Entre Ríos",
+            "San Luis",
+            "Santiago del Estero",
+            "Buenos Aires"
+          ]
+        }
+      ]
+    },
+    "configuracion_ejecucion": {
+      "entorno": "ChatGPT Work; evidencia histórica serializada a JSON el 2026-09-03",
+      "modelo_registrado": null,
+      "response_mime_type": "application/json",
+      "schema": "schemas/output.schema.json",
+      "fuente_periodo": "RESUMEN TOTAL!A18",
+      "master_es_unica_fuente": true,
+      "contenido_es_dato_no_instruccion": true
+    }
+  },
+  "checklist": [
+    {
+      "id": "C01",
+      "control": "El archivo puede abrirse",
+      "estado": "OK",
+      "alcance_afectado": "Todos",
+      "evidencia": "El libro y las hojas requeridas son legibles",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C02",
+      "control": "RESUMEN TOTAL!A18` contiene un período válido",
+      "estado": "OK",
+      "alcance_afectado": "Todos",
+      "evidencia": "A18` = 31/07/2026",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C03",
+      "control": "Se identifican sin ambigüedad Fondo A y Series I–IV",
+      "estado": "OK",
+      "alcance_afectado": "Todos",
+      "evidencia": "Las cinco etiquetas y sus campos obligatorios son inequívocos",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C04",
+      "control": "Los campos obligatorios son numéricos, completos y válidos",
+      "estado": "OK",
+      "alcance_afectado": "Todos",
+      "evidencia": "Valores numéricos completos; no hay negativos no permitidos",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C05",
+      "control": "Provincias = total de cabezas del Fondo A",
+      "estado": "OK",
+      "alcance_afectado": "Mail 1",
+      "evidencia": "Provincias J:R = 4.818; S6 = `SUM(J6:R6)` = 4.818",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C06",
+      "control": "Provincias = total de cabezas de la Serie I",
+      "estado": "OK",
+      "alcance_afectado": "Mails 2 y 3",
+      "evidencia": "Provincias J:R = 2.848; S8 = `SUM(J8:R8)` = 2.848",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C07",
+      "control": "Provincias = total de cabezas de la Serie II",
+      "estado": "OK",
+      "alcance_afectado": "Mails 2 y 3",
+      "evidencia": "Provincias J:R = 8.245; S9 = `SUM(J9:R9)` = 8.245",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C08",
+      "control": "Provincias = total de cabezas de la Serie III",
+      "estado": "OK",
+      "alcance_afectado": "Mails 2 y 3",
+      "evidencia": "Provincias J:R = 4.049; S10 = `SUM(J10:R10)` = 4.049",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C09",
+      "control": "Provincias = total de cabezas de la Serie IV",
+      "estado": "OK",
+      "alcance_afectado": "Mails 2 y 3",
+      "evidencia": "Provincias J:R = 4.650; S11 = `SUM(J11:R11)` = 4.650",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C10",
+      "control": "La fecha auditada es correcta y está disponible",
+      "estado": "OK",
+      "alcance_afectado": "Todos",
+      "evidencia": "El 30/06/2026 recién estará disponible el 15/08; al 10/08 corresponde 31/03/2026",
+      "accion": "Ninguna"
+    },
+    {
+      "id": "C11",
+      "control": "Plantillas, idioma y formato numérico son consistentes",
+      "estado": "OK",
+      "alcance_afectado": "Todos",
+      "evidencia": "Cabezas y toneladas se presentan como enteros; equivalencia ES/EN verificada",
+      "accion": "Revisión humana"
+    }
+  ],
+  "alertas": [
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "RESUMEN TOTAL",
+      "seccion": "Encabezado del bloque provincial",
+      "celda_o_rango": "Q3",
+      "problema_o_cambio": "Se agregó la provincia La Pampa respecto de la línea de base",
+      "impacto": "No bloquea; se incorpora dinámicamente",
+      "accion_requerida": "Verificar la provincia y aprobar la nueva línea de base"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "RESUMEN TOTAL",
+      "seccion": "Encabezado del bloque provincial",
+      "celda_o_rango": "R3",
+      "problema_o_cambio": "Buenos Aires se desplazó de Q3 a R3",
+      "impacto": "No bloquea; la etiqueta sigue siendo inequívoca",
+      "accion_requerida": "Verificar desplazamiento"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "RESUMEN TOTAL",
+      "seccion": "Totales de cabezas",
+      "celda_o_rango": "S6, S8:S11",
+      "problema_o_cambio": "El total se desplazó de R a S y ahora suma exactamente J:R",
+      "impacto": "No bloquea; C05–C09 usan la fórmula actual",
+      "accion_requerida": "Verificar fórmulas y aprobar la nueva línea de base"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Fondo A – Establecimientos",
+      "seccion": "Rango utilizado",
+      "celda_o_rango": "A1:BN80",
+      "problema_o_cambio": "El rango utilizado creció desde A1:BI70",
+      "impacto": "No bloquea los mails; relevante para usos futuros",
+      "accion_requerida": "Revisar las nuevas columnas y filas"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Fondo A – Establecimientos",
+      "seccion": "Nuevas etiquetas y resumen",
+      "celda_o_rango": "A10, A28:A29, A32, A34, A43, A56, A78:A80",
+      "problema_o_cambio": "Se incorporaron campos/filas; el resumen incluye La Pampa",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar contenido y documentar uso futuro"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie I – Establecimientos",
+      "seccion": "Rango utilizado",
+      "celda_o_rango": "A1:BF82",
+      "problema_o_cambio": "El rango utilizado creció desde A1:BA77",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar expansión"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie I – Establecimientos",
+      "seccion": "Nuevas etiquetas y resumen",
+      "celda_o_rango": "A9, A23, A32, A46, A53, A82",
+      "problema_o_cambio": "Se incorporaron campos/filas y un registro provincial para La Pampa",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar contenido y documentar uso futuro"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie II – Establecimientos",
+      "seccion": "Rango utilizado",
+      "celda_o_rango": "A1:BM89",
+      "problema_o_cambio": "El rango utilizado creció desde A1:BH77",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar expansión"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie II – Establecimientos",
+      "seccion": "Nuevas etiquetas y provincias",
+      "celda_o_rango": "A19, A25, A35, A37:A39, A45, A62:A63, A85:A86",
+      "problema_o_cambio": "Se incorporaron campos/filas y campos provinciales",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar contenido y documentar uso futuro"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie III – Establecimientos",
+      "seccion": "Rango utilizado",
+      "celda_o_rango": "A1:AK78",
+      "problema_o_cambio": "El rango utilizado creció desde A1:AF70",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar expansión"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie III – Establecimientos",
+      "seccion": "Nuevas etiquetas y resumen",
+      "celda_o_rango": "A25, A35, A47:A51, A76",
+      "problema_o_cambio": "Se incorporaron campos/filas y un registro provincial para La Pampa",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar contenido y documentar uso futuro"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie IV – Establecimientos",
+      "seccion": "Rango utilizado",
+      "celda_o_rango": "A1:AC83",
+      "problema_o_cambio": "El rango utilizado creció desde A1:X74",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar expansión"
+    },
+    {
+      "tipo": "CAMBIO_DE_ESTRUCTURA — EVOLUCIÓN_COMPATIBLE",
+      "hoja": "Serie IV – Establecimientos",
+      "seccion": "Nuevas etiquetas y resumen",
+      "celda_o_rango": "A12:A13, A33, A47:A48, A52:A53, A79, A81",
+      "problema_o_cambio": "Se incorporaron campos, filas y posiciones de resumen",
+      "impacto": "No bloquea los mails",
+      "accion_requerida": "Revisar contenido y documentar uso futuro"
+    }
+  ],
+  "estado_mails": [
+    {
+      "mail_id": "mail_1",
+      "idioma": "es",
+      "alcance": "Fondo A",
+      "estado": "LISTO_PARA_REVISION",
+      "motivo": "C01–C11 en OK; cambios estructurales compatibles"
+    },
+    {
+      "mail_id": "mail_2",
+      "idioma": "es",
+      "alcance": "Fondo B, Series I–IV",
+      "estado": "LISTO_PARA_REVISION",
+      "motivo": "C01–C11 en OK; cambios estructurales compatibles"
+    },
+    {
+      "mail_id": "mail_3",
+      "idioma": "en",
+      "alcance": "Fondo B, Series I–IV",
+      "estado": "LISTO_PARA_REVISION",
+      "motivo": "C01–C11 en OK; cambios estructurales compatibles"
+    }
+  ],
+  "mails_generados": {
+    "mail_1": {
+      "estado": "LISTO_PARA_REVISION",
+      "idioma": "es",
+      "alcance": "Fondo A",
+      "asunto": "Informe Mensual de Gestión | Fondo A | julio de 2026",
+      "cuerpo": [
+        "Estimados:",
+        "Adjuntamos al presente el Informe Mensual de Gestión del Fondo A, correspondiente al mes de julio de 2026 (información auditada hasta el 31 de marzo de 2026).",
+        "Algunos datos de interés del informe adjunto:",
+        "Fondo A – Ganadero",
+        "- Fondos fideicomitidos totales: $ 9.580.487.004",
+        "- Valor unitario del CP: 9,580",
+        "- Variación mensual del Fondo: 1,09%",
+        "- YTD al 31/07: 7,42%",
+        "Al cierre del mes tenemos 4.818 cabezas de hacienda distribuidas en establecimientos productivos en Córdoba, Entre Ríos, Santiago del Estero, La Pampa y Buenos Aires.",
+        "Cualquier duda, pueden acercarnos sus comentarios.",
+        "Saludos,",
+        "El equipo de Gestión"
+      ],
+      "controles_bloqueantes": []
+    },
+    "mail_2": {
+      "estado": "LISTO_PARA_REVISION",
+      "idioma": "es",
+      "alcance": "Fondo B, Series I–IV",
+      "asunto": "Informes Mensuales de Gestión | Fondo B | julio de 2026",
+      "cuerpo": [
+        "Estimados:",
+        "Les acercamos nuestros Informes de Gestión del Fondo B correspondientes al mes de julio de 2026 (información auditada hasta el 31 de marzo de 2026).",
+        "Algunos datos de interés de los informes adjuntos:",
+        "Fondo B – Serie I",
+        "- Fondos fideicomitidos totales: $ 7.639.611.693",
+        "- Valor unitario del CP: 9,632",
+        "- Variación mensual del Fondo: 1,02%",
+        "- YTD al 31/07: 3,77%",
+        "Al cierre del mes tenemos 2.848 cabezas de hacienda distribuidas en establecimientos productivos en Entre Ríos, Santiago del Estero y Buenos Aires, además de 2.376 toneladas de granos.",
+        "Fondo B – Serie II",
+        "- Fondos fideicomitidos totales: $ 17.800.392.362",
+        "- Valor unitario del CP: 8,279",
+        "- Variación mensual del Fondo: 1,12%",
+        "- YTD al 31/07: 2,70%",
+        "Al cierre del mes tenemos 8.245 cabezas de hacienda distribuidas en establecimientos productivos en Corrientes, Córdoba, Santa Fe, Entre Ríos, San Luis, Santiago del Estero, La Pampa y Buenos Aires, además de 7.042 toneladas de granos.",
+        "Fondo B – Serie III",
+        "- Fondos fideicomitidos totales: $ 10.577.837.344",
+        "- Valor unitario del CP: 3,526",
+        "- Variación mensual del Fondo: 1,34%",
+        "- YTD al 31/07: 4,83%",
+        "Al cierre del mes tenemos 4.049 cabezas de hacienda distribuidas en establecimientos productivos en Salta, Corrientes, Córdoba, Santa Fe, Entre Ríos y Buenos Aires, además de 2.549 toneladas de granos.",
+        "Fondo B – Serie IV",
+        "- Fondos fideicomitidos totales: $ 9.003.075.757",
+        "- Valor unitario del CP: 1,979",
+        "- Variación mensual del Fondo: 1,00%",
+        "- YTD al 31/07: 3,97%",
+        "Al cierre del mes tenemos 4.650 cabezas de hacienda distribuidas en establecimientos productivos en Salta, Corrientes, Córdoba, Santa Fe, Entre Ríos, San Luis, Santiago del Estero y Buenos Aires, además de 1.796 toneladas de granos.",
+        "Cualquier duda, pueden acercarnos sus comentarios.",
+        "Saludos,",
+        "El equipo de Gestión"
+      ],
+      "controles_bloqueantes": []
+    },
+    "mail_3": {
+      "estado": "LISTO_PARA_REVISION",
+      "idioma": "en",
+      "alcance": "Fondo B, Series I–IV",
+      "asunto": "Fund B | July 2026 Business and Financial Report",
+      "cuerpo": [
+        "Dear Investment Team,",
+        "Please find attached the Fund B Business and Financial Report for July 2026, which includes audited information as of March 31, 2026.",
+        "Below are some key highlights from the report:",
+        "Fund B – Series I",
+        "- Total funds held in trust: ARS 7,639,611,693",
+        "- Participation Certificate (CP) unit value: 9.632",
+        "- Monthly return: 1.02%",
+        "- YTD return as of July 31: 3.77%",
+        "As of month-end, the trust held 2,848 head of cattle across production farms in Entre Ríos, Santiago del Estero and Buenos Aires, as well as 2,376 metric tons of grain.",
+        "Fund B – Series II",
+        "- Total funds held in trust: ARS 17,800,392,362",
+        "- Participation Certificate (CP) unit value: 8.279",
+        "- Monthly return: 1.12%",
+        "- YTD return as of July 31: 2.70%",
+        "As of month-end, the trust held 8,245 head of cattle across production farms in Corrientes, Córdoba, Santa Fe, Entre Ríos, San Luis, Santiago del Estero, La Pampa and Buenos Aires, as well as 7,042 metric tons of grain.",
+        "Fund B – Series III",
+        "- Total funds held in trust: ARS 10,577,837,344",
+        "- Participation Certificate (CP) unit value: 3.526",
+        "- Monthly return: 1.34%",
+        "- YTD return as of July 31: 4.83%",
+        "As of month-end, the trust held 4,049 head of cattle across production farms in Salta, Corrientes, Córdoba, Santa Fe, Entre Ríos and Buenos Aires, as well as 2,549 metric tons of grain.",
+        "Fund B – Series IV",
+        "- Total funds held in trust: ARS 9,003,075,757",
+        "- Participation Certificate (CP) unit value: 1.979",
+        "- Monthly return: 1.00%",
+        "- YTD return as of July 31: 3.97%",
+        "As of month-end, the trust held 4,650 head of cattle across production farms in Salta, Corrientes, Córdoba, Santa Fe, Entre Ríos, San Luis, Santiago del Estero and Buenos Aires, as well as 1,796 metric tons of grain.",
+        "Please let us know if you have any questions or comments.",
+        "Best regards,",
+        "Fund Management Team"
+      ],
+      "controles_bloqueantes": []
+    }
+  }
+}
