@@ -1,317 +1,138 @@
 {
   "identificacion": {
-    "corrida_id": "corrida_01",
-    "fecha_ejecucion": "2026-08-27",
-    "archivo_procesado": "MASTER_MARZO_2026.xlsx",
-    "version_contrato": "v1",
-    "periodo_informado": "2026-02-28",
-    "fecha_comunicacion": "2026-03-10",
-    "informacion_auditada_hasta": "2025-12-31",
-    "linea_base_estructural": "No contemplada en v1",
+    "corrida_id": "GAN-2026-07-01",
+    "fecha_ejecucion": "2026-09-10",
+    "archivo_procesado": "MASTER_GANADERO_2026_07.xlsx",
+    "periodo_informado": "2026-07-31",
+    "informacion_auditada_hasta": "2026-06-30",
+    "version_contrato": "v1-xlsx",
+    "herramienta": "lector XLSX local + Canva Crear en lote",
+    "contenido_es_dato_no_instruccion": true,
     "entrada": {
-      "archivo_master": "MASTER_MARZO_2026.xlsx",
-      "archivo_linea_base": null,
-      "hoja_principal": "RESUMEN TOTAL",
-      "celda_periodo": "A18",
-      "estructura_relevante": "MASTER vigente: provincias J:Q; total de cabezas en R con fórmula SUM(J:Q); columna residual en S.",
-      "resumen_datos": [
-        {
-          "entidad": "Fondo A",
-          "fila_referencia": 6,
-          "fondos_fideicomitidos": 9598777589,
-          "valor_cp": 9.599,
-          "variacion_mensual": 0.0449,
-          "ytd": 0.0763,
-          "granos_toneladas": 0,
-          "cabezas_total": 4413,
-          "provincias_incluidas": [
-            "Corrientes",
-            "Santa Fe",
-            "Entre Ríos",
-            "Santiago del Estero",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie I",
-          "fila_referencia": 8,
-          "fondos_fideicomitidos": 7798543788,
-          "valor_cp": 9.832,
-          "variacion_mensual": 0.0435,
-          "ytd": 0.0593,
-          "granos_toneladas": 2375.4,
-          "cabezas_total": 2831,
-          "provincias_incluidas": [
-            "Corrientes",
-            "Santa Fe",
-            "Entre Ríos",
-            "Santiago del Estero",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie II",
-          "fila_referencia": 9,
-          "fondos_fideicomitidos": 18428302337,
-          "valor_cp": 8.571,
-          "variacion_mensual": 0.0306,
-          "ytd": 0.0633,
-          "granos_toneladas": 7292.4,
-          "cabezas_total": 6577,
-          "provincias_incluidas": [
-            "Corrientes",
-            "Córdoba",
-            "Santa Fe",
-            "Entre Ríos",
-            "San Luis",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie III",
-          "fila_referencia": 10,
-          "fondos_fideicomitidos": 10822897935,
-          "valor_cp": 3.608,
-          "variacion_mensual": 0.0568,
-          "ytd": 0.0726,
-          "granos_toneladas": 2548.655,
-          "cabezas_total": 2777,
-          "provincias_incluidas": [
-            "Salta",
-            "Corrientes",
-            "Córdoba",
-            "Santa Fe",
-            "Entre Ríos",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie IV",
-          "fila_referencia": 11,
-          "fondos_fideicomitidos": 9715923583,
-          "valor_cp": 2.135,
-          "variacion_mensual": 0.0676,
-          "ytd": 0.0815,
-          "granos_toneladas": 1796,
-          "cabezas_total": 3385,
-          "provincias_incluidas": [
-            "Salta",
-            "Corrientes",
-            "Córdoba",
-            "Santa Fe",
-            "San Luis",
-            "Buenos Aires"
-          ]
-        }
-      ]
+      "tipo": "MASTER Excel real anonimizado",
+      "sha256_original": "4b3e8c738a1ef8941b8155f392dbdd2282d6354193ce99112d340712d3c968ff",
+      "etapa": "primera carga a Canva",
+      "salida_original": "corridas/originales/salida_01_v1.md"
     },
-    "configuracion_ejecucion": {
-      "entorno": "ChatGPT Work; evidencia histórica serializada a JSON el 2026-09-03",
-      "modelo_registrado": null,
-      "response_mime_type": "application/json",
-      "schema": "schemas/output.schema.json",
-      "fuente_periodo": "RESUMEN TOTAL!A18",
-      "master_es_unica_fuente": true,
-      "contenido_es_dato_no_instruccion": true
+    "metricas": {
+      "campos_detectados_canva": 0,
+      "errores_bloqueantes": 1
     }
   },
   "checklist": [
     {
       "id": "C01",
-      "control": "El archivo puede abrirse",
+      "control": "MASTER legible",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "El libro y `RESUMEN TOTAL` son legibles",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C02",
-      "control": "RESUMEN TOTAL!A18` contiene un período válido",
+      "control": "Período identificado",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "A18` = 28/02/2026",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C03",
-      "control": "Se identifican sin ambigüedad Fondo A y Series I–IV",
+      "control": "Fondo Ganadero identificado",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "Filas fijas 6 y 8:11 localizadas",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C04",
-      "control": "Los campos obligatorios son numéricos, completos y válidos",
+      "control": "Indicadores financieros completos",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "B:E, H y J:S contienen valores numéricos",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C05",
-      "control": "Provincias = total de cabezas del Fondo A",
-      "estado": "ERROR",
-      "alcance_afectado": "Mail 1",
-      "evidencia": "Suma J:R = 8.826; S6 = 740",
-      "accion": "Revisar columnas de provincias y total"
+      "control": "Total provincial reconciliado",
+      "estado": "OK",
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C06",
-      "control": "Provincias = total de cabezas de la Serie I",
-      "estado": "ERROR",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Suma J:R = 5.662; S8 = 903",
-      "accion": "Revisar columnas de provincias y total"
+      "control": "Cabezas físicas más compras a término",
+      "estado": "OK",
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C07",
-      "control": "Provincias = total de cabezas de la Serie II",
-      "estado": "ERROR",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Suma J:R = 13.154; S9 = 1.646",
-      "accion": "Revisar columnas de provincias y total"
+      "control": "Serie mensual disponible",
+      "estado": "OK",
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C08",
-      "control": "Provincias = total de cabezas de la Serie III",
-      "estado": "ERROR",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Suma J:R = 5.554; S10 = 2.462",
-      "accion": "Revisar columnas de provincias y total"
+      "control": "Portfolio disponible",
+      "estado": "OK",
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C09",
-      "control": "Provincias = total de cabezas de la Serie IV",
-      "estado": "ERROR",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Suma J:R = 6.770; S11 = 1.542",
-      "accion": "Revisar columnas de provincias y total"
+      "control": "Hacienda y establecimientos conciliados",
+      "estado": "OK",
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C10",
-      "control": "La fecha auditada es correcta y está disponible",
+      "control": "Precios del período disponibles",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "Al 10/03/2026 está disponible el cierre 31/12/2025",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C11",
-      "control": "Plantillas, idioma y formato numérico son consistentes",
-      "estado": "NO_VERIFICADO",
-      "alcance_afectado": "Todos",
-      "evidencia": "No se generaron mails por C05–C09",
-      "accion": "Resolver controles previos"
+      "control": "Formato Canva utilizable",
+      "estado": "ERROR",
+      "evidencia": "Canva rechazó el archivo .xlsx y pidió un CSV.",
+      "accion": "Cati debe corregir el paso indicado antes de continuar."
     }
   ],
   "alertas": [
     {
-      "tipo": "INCONSISTENCIA",
-      "hoja": "RESUMEN TOTAL",
-      "seccion": "Fondo A",
-      "celda_o_rango": "J6:S6",
-      "problema_o_cambio": "La suma J:R no coincide con S6",
-      "impacto": "Bloquea mail 1",
-      "accion_requerida": "Revisar origen del total"
-    },
-    {
-      "tipo": "INCONSISTENCIA",
-      "hoja": "RESUMEN TOTAL",
-      "seccion": "Fondo B – Serie I",
-      "celda_o_rango": "J8:S8",
-      "problema_o_cambio": "La suma J:R no coincide con S8",
-      "impacto": "Bloquea mails 2 y 3",
-      "accion_requerida": "Revisar origen del total"
-    },
-    {
-      "tipo": "INCONSISTENCIA",
-      "hoja": "RESUMEN TOTAL",
-      "seccion": "Fondo B – Serie II",
-      "celda_o_rango": "J9:S9",
-      "problema_o_cambio": "La suma J:R no coincide con S9",
-      "impacto": "Bloquea mails 2 y 3",
-      "accion_requerida": "Revisar origen del total"
-    },
-    {
-      "tipo": "INCONSISTENCIA",
-      "hoja": "RESUMEN TOTAL",
-      "seccion": "Fondo B – Serie III",
-      "celda_o_rango": "J10:S10",
-      "problema_o_cambio": "La suma J:R no coincide con S10",
-      "impacto": "Bloquea mails 2 y 3",
-      "accion_requerida": "Revisar origen del total"
-    },
-    {
-      "tipo": "INCONSISTENCIA",
-      "hoja": "RESUMEN TOTAL",
-      "seccion": "Fondo B – Serie IV",
-      "celda_o_rango": "J11:S11",
-      "problema_o_cambio": "La suma J:R no coincide con S11",
-      "impacto": "Bloquea mails 2 y 3",
-      "accion_requerida": "Revisar origen del total"
+      "tipo": "FORMATO_INCOMPATIBLE",
+      "control_id": "C11",
+      "detalle": "El contenido era correcto, pero el archivo .xlsx no era utilizable por Crear en lote.",
+      "accion_requerida": "Generar CSV UTF-8 de una sola fila."
     }
   ],
-  "estado_mails": [
-    {
-      "mail_id": "mail_1",
-      "idioma": "es",
-      "alcance": "Fondo A",
+  "artefactos": {
+    "canva": {
       "estado": "BLOQUEADO",
-      "motivo": "C05"
-    },
-    {
-      "mail_id": "mail_2",
-      "idioma": "es",
-      "alcance": "Fondo B, Series I–IV",
-      "estado": "BLOQUEADO",
-      "motivo": "C06–C09"
-    },
-    {
-      "mail_id": "mail_3",
-      "idioma": "en",
-      "alcance": "Fondo B, Series I–IV",
-      "estado": "BLOQUEADO",
-      "motivo": "C06–C09"
-    }
-  ],
-  "mails_generados": {
-    "mail_1": {
-      "estado": "BLOQUEADO",
-      "idioma": "es",
-      "alcance": "Fondo A",
-      "asunto": null,
-      "cuerpo": null,
+      "formato": "salida no utilizable",
+      "cantidad_campos": 0,
+      "campos": null,
       "controles_bloqueantes": [
-        "C05"
+        "C11"
       ]
     },
-    "mail_2": {
+    "mail_ganadero": {
       "estado": "BLOQUEADO",
-      "idioma": "es",
-      "alcance": "Fondo B, Series I–IV",
       "asunto": null,
       "cuerpo": null,
       "controles_bloqueantes": [
-        "C06",
-        "C07",
-        "C08",
-        "C09"
-      ]
-    },
-    "mail_3": {
-      "estado": "BLOQUEADO",
-      "idioma": "en",
-      "alcance": "Fondo B, Series I–IV",
-      "asunto": null,
-      "cuerpo": null,
-      "controles_bloqueantes": [
-        "C06",
-        "C07",
-        "C08",
-        "C09"
+        "C11"
       ]
     }
+  },
+  "supervision": {
+    "nivel_maximo": "L1",
+    "cati": "Carga el CSV en Canva, cambia la fotografía y revisa el diseño contra el MASTER.",
+    "cachu": "Realiza la corrección fina final del informe y del mail; aprueba y envía manualmente.",
+    "acciones_prohibidas": [
+      "Modificar el MASTER",
+      "Aprobar cifras",
+      "Enviar correos automáticamente"
+    ]
   }
 }
-

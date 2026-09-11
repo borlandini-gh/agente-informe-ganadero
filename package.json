@@ -1,5 +1,5 @@
 {
-  "name": "generador-mails-mensuales",
+  "name": "agente-informe-ganadero",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -10,17 +10,20 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
     "build": "bash scripts/build-verified.sh",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "node tests/validar_corridas.mjs && node --test tests/model-reviewer.test.mjs tests/sheet-read-limits.test.mjs",
+    "test:web": "npm run build && node --test tests/rendered-html.test.mjs",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
+    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
+    "generar": "node scripts/generar-ganadero.mjs",
+    "validar": "npm test"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "xlsx": "^0.18.5"
+    "xlsx": "0.18.5"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.37.1",
@@ -41,5 +44,5 @@
     "wrangler": "4.92.0"
   },
   "type": "module",
-  "displayName": "Generador de mails mensuales"
+  "displayName": "Agente de informe Ganadero"
 }

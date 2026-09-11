@@ -1,344 +1,139 @@
 {
   "identificacion": {
-    "corrida_id": "corrida_02",
-    "fecha_ejecucion": "2026-08-27",
-    "archivo_procesado": "MASTER_MARZO_2026.xlsx",
-    "version_contrato": "v2",
-    "periodo_informado": "2026-02-28",
-    "fecha_comunicacion": "2026-03-10",
-    "informacion_auditada_hasta": "2025-12-31",
-    "linea_base_estructural": "COMPARACIÓN_NO_DISPONIBLE",
+    "corrida_id": "GAN-2026-07-02",
+    "fecha_ejecucion": "2026-09-10",
+    "archivo_procesado": "MASTER_GANADERO_2026_07.xlsx",
+    "periodo_informado": "2026-07-31",
+    "informacion_auditada_hasta": "2026-06-30",
+    "version_contrato": "v2-csv-tablas",
+    "herramienta": "lector XLSX local + Canva Crear en lote",
+    "contenido_es_dato_no_instruccion": true,
     "entrada": {
-      "archivo_master": "MASTER_MARZO_2026.xlsx",
-      "archivo_linea_base": null,
-      "hoja_principal": "RESUMEN TOTAL",
-      "celda_periodo": "A18",
-      "estructura_relevante": "MASTER vigente: provincias J:Q; total de cabezas en R con fórmula SUM(J:Q); columna residual en S.",
-      "resumen_datos": [
-        {
-          "entidad": "Fondo A",
-          "fila_referencia": 6,
-          "fondos_fideicomitidos": 9598777589,
-          "valor_cp": 9.599,
-          "variacion_mensual": 0.0449,
-          "ytd": 0.0763,
-          "granos_toneladas": 0,
-          "cabezas_total": 4413,
-          "provincias_incluidas": [
-            "Corrientes",
-            "Santa Fe",
-            "Entre Ríos",
-            "Santiago del Estero",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie I",
-          "fila_referencia": 8,
-          "fondos_fideicomitidos": 7798543788,
-          "valor_cp": 9.832,
-          "variacion_mensual": 0.0435,
-          "ytd": 0.0593,
-          "granos_toneladas": 2375.4,
-          "cabezas_total": 2831,
-          "provincias_incluidas": [
-            "Corrientes",
-            "Santa Fe",
-            "Entre Ríos",
-            "Santiago del Estero",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie II",
-          "fila_referencia": 9,
-          "fondos_fideicomitidos": 18428302337,
-          "valor_cp": 8.571,
-          "variacion_mensual": 0.0306,
-          "ytd": 0.0633,
-          "granos_toneladas": 7292.4,
-          "cabezas_total": 6577,
-          "provincias_incluidas": [
-            "Corrientes",
-            "Córdoba",
-            "Santa Fe",
-            "Entre Ríos",
-            "San Luis",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie III",
-          "fila_referencia": 10,
-          "fondos_fideicomitidos": 10822897935,
-          "valor_cp": 3.608,
-          "variacion_mensual": 0.0568,
-          "ytd": 0.0726,
-          "granos_toneladas": 2548.655,
-          "cabezas_total": 2777,
-          "provincias_incluidas": [
-            "Salta",
-            "Corrientes",
-            "Córdoba",
-            "Santa Fe",
-            "Entre Ríos",
-            "Buenos Aires"
-          ]
-        },
-        {
-          "entidad": "Fondo B - Serie IV",
-          "fila_referencia": 11,
-          "fondos_fideicomitidos": 9715923583,
-          "valor_cp": 2.135,
-          "variacion_mensual": 0.0676,
-          "ytd": 0.0815,
-          "granos_toneladas": 1796,
-          "cabezas_total": 3385,
-          "provincias_incluidas": [
-            "Salta",
-            "Corrientes",
-            "Córdoba",
-            "Santa Fe",
-            "San Luis",
-            "Buenos Aires"
-          ]
-        }
-      ]
+      "tipo": "MASTER Excel real anonimizado",
+      "sha256_original": "4b3e8c738a1ef8941b8155f392dbdd2282d6354193ce99112d340712d3c968ff",
+      "etapa": "vinculación sobre template original",
+      "salida_original": "corridas/originales/salida_02_v2.md"
     },
-    "configuracion_ejecucion": {
-      "entorno": "ChatGPT Work; evidencia histórica serializada a JSON el 2026-09-03",
-      "modelo_registrado": null,
-      "response_mime_type": "application/json",
-      "schema": "schemas/output.schema.json",
-      "fuente_periodo": "RESUMEN TOTAL!A18",
-      "master_es_unica_fuente": true,
-      "contenido_es_dato_no_instruccion": true
+    "metricas": {
+      "campos_detectados_canva": 85,
+      "campos_coincidentes_automaticos": 9,
+      "errores_bloqueantes": 1
     }
   },
   "checklist": [
     {
       "id": "C01",
-      "control": "El archivo puede abrirse",
+      "control": "MASTER legible",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "El libro y `RESUMEN TOTAL` son legibles",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C02",
-      "control": "RESUMEN TOTAL!A18` contiene un período válido",
+      "control": "Período identificado",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "A18` = 28/02/2026",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C03",
-      "control": "Se identifican sin ambigüedad Fondo A y Series I–IV",
+      "control": "Fondo Ganadero identificado",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "Etiquetas localizadas en filas 6 y 8:11",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C04",
-      "control": "Los campos obligatorios son numéricos, completos y válidos",
+      "control": "Indicadores financieros completos",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "Todos los campos requeridos son numéricos y no negativos donde corresponde",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C05",
-      "control": "Provincias = total de cabezas del Fondo A",
+      "control": "Total provincial reconciliado",
       "estado": "OK",
-      "alcance_afectado": "Mail 1",
-      "evidencia": "Provincias J:Q = 4.413; R6 = `SUM(J6:Q6)` = 4.413",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C06",
-      "control": "Provincias = total de cabezas de la Serie I",
+      "control": "Cabezas físicas más compras a término",
       "estado": "OK",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Provincias J:Q = 2.831; R8 = `SUM(J8:Q8)` = 2.831",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C07",
-      "control": "Provincias = total de cabezas de la Serie II",
+      "control": "Serie mensual disponible",
       "estado": "OK",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Provincias J:Q = 6.577; R9 = `SUM(J9:Q9)` = 6.577",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C08",
-      "control": "Provincias = total de cabezas de la Serie III",
+      "control": "Portfolio disponible",
       "estado": "OK",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Provincias J:Q = 2.777; R10 = `SUM(J10:Q10)` = 2.777",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C09",
-      "control": "Provincias = total de cabezas de la Serie IV",
+      "control": "Hacienda y establecimientos conciliados",
       "estado": "OK",
-      "alcance_afectado": "Mails 2 y 3",
-      "evidencia": "Provincias J:Q = 3.385; R11 = `SUM(J11:Q11)` = 3.385",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C10",
-      "control": "La fecha auditada es correcta y está disponible",
+      "control": "Precios del período disponibles",
       "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "Al 10/03/2026 corresponde el cierre 31/12/2025",
-      "accion": "Ninguna"
+      "evidencia": "Validado contra el MASTER anonimizado de cierre 2026-07-31.",
+      "accion": "Sin acción."
     },
     {
       "id": "C11",
-      "control": "Plantillas, idioma y formato numérico son consistentes",
-      "estado": "OK",
-      "alcance_afectado": "Todos",
-      "evidencia": "Se aplicaron las tres plantillas y los formatos ES/EN de v2",
-      "accion": "Revisión humana"
+      "control": "Formato Canva utilizable",
+      "estado": "ERROR",
+      "evidencia": "Canva informó 9 coincidencias de 85; las celdas dentro de tablas no aceptaron vínculos estables.",
+      "accion": "Cati debe corregir el paso indicado antes de continuar."
     }
   ],
   "alertas": [
     {
-      "tipo": "COMPARACIÓN_NO_DISPONIBLE",
-      "hoja": null,
-      "seccion": "Línea de base",
-      "celda_o_rango": null,
-      "problema_o_cambio": "No se proporcionó un MASTER anterior aprobado para comparar estructura",
-      "impacto": "No bloquea",
-      "accion_requerida": "Conservar este MASTER como línea de base tras aprobación humana"
+      "tipo": "TEMPLATE_INCOMPATIBLE",
+      "control_id": "C11",
+      "detalle": "Los campos existían en el CSV, pero las celdas del template estaban dentro de tablas.",
+      "accion_requerida": "Reemplazar solo los datos variables por cuadros de texto independientes y conservar fijas las filas históricas."
     }
   ],
-  "estado_mails": [
-    {
-      "mail_id": "mail_1",
-      "idioma": "es",
-      "alcance": "Fondo A",
-      "estado": "LISTO_PARA_REVISION",
-      "motivo": "C01–C11 sin errores aplicables"
+  "artefactos": {
+    "canva": {
+      "estado": "BLOQUEADO",
+      "formato": "salida no utilizable",
+      "cantidad_campos": 0,
+      "campos": null,
+      "controles_bloqueantes": [
+        "C11"
+      ]
     },
-    {
-      "mail_id": "mail_2",
-      "idioma": "es",
-      "alcance": "Fondo B, Series I–IV",
-      "estado": "LISTO_PARA_REVISION",
-      "motivo": "C01–C11 sin errores aplicables"
-    },
-    {
-      "mail_id": "mail_3",
-      "idioma": "en",
-      "alcance": "Fondo B, Series I–IV",
-      "estado": "LISTO_PARA_REVISION",
-      "motivo": "C01–C11 sin errores aplicables"
+    "mail_ganadero": {
+      "estado": "BLOQUEADO",
+      "asunto": null,
+      "cuerpo": null,
+      "controles_bloqueantes": [
+        "C11"
+      ]
     }
-  ],
-  "mails_generados": {
-    "mail_1": {
-      "estado": "LISTO_PARA_REVISION",
-      "idioma": "es",
-      "alcance": "Fondo A",
-      "asunto": "Informe Mensual de Gestión | Fondo A | febrero de 2026",
-      "cuerpo": [
-        "Estimados:",
-        "Adjuntamos al presente el Informe Mensual de Gestión del Fondo A, correspondiente al mes de febrero de 2026 (información auditada hasta el 31 de diciembre de 2025).",
-        "Algunos datos de interés del informe adjunto:",
-        "Fondo A – Ganadero",
-        "- Fondos fideicomitidos totales: $ 9.598.777.589",
-        "- Valor unitario del CP: 9,599",
-        "- Variación mensual del Fondo: 4,49%",
-        "- YTD al 28/02: 7,63%",
-        "Al cierre del mes tenemos 4.413 cabezas de hacienda distribuidas en establecimientos productivos en Corrientes, Santa Fe, Entre Ríos, Santiago del Estero y Buenos Aires.",
-        "Cualquier duda, pueden acercarnos sus comentarios.",
-        "Saludos,",
-        "El equipo de Gestión"
-      ],
-      "controles_bloqueantes": []
-    },
-    "mail_2": {
-      "estado": "LISTO_PARA_REVISION",
-      "idioma": "es",
-      "alcance": "Fondo B, Series I–IV",
-      "asunto": "Informes Mensuales de Gestión | Fondo B | febrero de 2026",
-      "cuerpo": [
-        "Estimados:",
-        "Les acercamos nuestros Informes de Gestión del Fondo B correspondientes al mes de febrero de 2026 (información auditada hasta el 31 de diciembre de 2025).",
-        "Algunos datos de interés de los informes adjuntos:",
-        "Fondo B – Serie I",
-        "- Fondos fideicomitidos totales: $ 7.798.543.788",
-        "- Valor unitario del CP: 9,832",
-        "- Variación mensual del Fondo: 4,35%",
-        "- YTD al 28/02: 5,93%",
-        "Al cierre del mes tenemos 2.831 cabezas de hacienda distribuidas en establecimientos productivos en Corrientes, Santa Fe, Entre Ríos, Santiago del Estero y Buenos Aires, además de 2.375,4 toneladas de granos.",
-        "Fondo B – Serie II",
-        "- Fondos fideicomitidos totales: $ 18.428.302.337",
-        "- Valor unitario del CP: 8,571",
-        "- Variación mensual del Fondo: 3,06%",
-        "- YTD al 28/02: 6,33%",
-        "Al cierre del mes tenemos 6.577 cabezas de hacienda distribuidas en establecimientos productivos en Corrientes, Córdoba, Santa Fe, Entre Ríos, San Luis y Buenos Aires, además de 7.292,4 toneladas de granos.",
-        "Fondo B – Serie III",
-        "- Fondos fideicomitidos totales: $ 10.822.897.935",
-        "- Valor unitario del CP: 3,608",
-        "- Variación mensual del Fondo: 5,68%",
-        "- YTD al 28/02: 7,26%",
-        "Al cierre del mes tenemos 2.777 cabezas de hacienda distribuidas en establecimientos productivos en Salta, Corrientes, Córdoba, Santa Fe, Entre Ríos y Buenos Aires, además de 2.548,655 toneladas de granos.",
-        "Fondo B – Serie IV",
-        "- Fondos fideicomitidos totales: $ 9.715.923.583",
-        "- Valor unitario del CP: 2,135",
-        "- Variación mensual del Fondo: 6,76%",
-        "- YTD al 28/02: 8,15%",
-        "Al cierre del mes tenemos 3.385 cabezas de hacienda distribuidas en establecimientos productivos en Salta, Corrientes, Córdoba, Santa Fe, San Luis y Buenos Aires, además de 1.796 toneladas de granos.",
-        "Cualquier duda, pueden acercarnos sus comentarios.",
-        "Saludos,",
-        "El equipo de Gestión"
-      ],
-      "controles_bloqueantes": []
-    },
-    "mail_3": {
-      "estado": "LISTO_PARA_REVISION",
-      "idioma": "en",
-      "alcance": "Fondo B, Series I–IV",
-      "asunto": "Fund B | February 2026 Business and Financial Report",
-      "cuerpo": [
-        "Dear Investment Team,",
-        "Please find attached the Fund B Business and Financial Report for February 2026, which includes audited information as of December 31, 2025.",
-        "Below are some key highlights from the report:",
-        "Fund B – Series I",
-        "- Total funds held in trust: ARS 7,798,543,788",
-        "- Participation Certificate (CP) unit value: 9.832",
-        "- Monthly return: 4.35%",
-        "- YTD return as of February 28: 5.93%",
-        "As of month-end, the trust held 2,831 head of cattle across production farms in Corrientes, Santa Fe, Entre Ríos, Santiago del Estero and Buenos Aires, as well as 2,375.4 metric tons of grain.",
-        "Fund B – Series II",
-        "- Total funds held in trust: ARS 18,428,302,337",
-        "- Participation Certificate (CP) unit value: 8.571",
-        "- Monthly return: 3.06%",
-        "- YTD return as of February 28: 6.33%",
-        "As of month-end, the trust held 6,577 head of cattle across production farms in Corrientes, Córdoba, Santa Fe, Entre Ríos, San Luis and Buenos Aires, as well as 7,292.4 metric tons of grain.",
-        "Fund B – Series III",
-        "- Total funds held in trust: ARS 10,822,897,935",
-        "- Participation Certificate (CP) unit value: 3.608",
-        "- Monthly return: 5.68%",
-        "- YTD return as of February 28: 7.26%",
-        "As of month-end, the trust held 2,777 head of cattle across production farms in Salta, Corrientes, Córdoba, Santa Fe, Entre Ríos and Buenos Aires, as well as 2,548.655 metric tons of grain.",
-        "Fund B – Series IV",
-        "- Total funds held in trust: ARS 9,715,923,583",
-        "- Participation Certificate (CP) unit value: 2.135",
-        "- Monthly return: 6.76%",
-        "- YTD return as of February 28: 8.15%",
-        "As of month-end, the trust held 3,385 head of cattle across production farms in Salta, Corrientes, Córdoba, Santa Fe, San Luis and Buenos Aires, as well as 1,796 metric tons of grain.",
-        "Please let us know if you have any questions or comments.",
-        "Best regards,",
-        "Fund Management Team"
-      ],
-      "controles_bloqueantes": []
-    }
+  },
+  "supervision": {
+    "nivel_maximo": "L1",
+    "cati": "Carga el CSV en Canva, cambia la fotografía y revisa el diseño contra el MASTER.",
+    "cachu": "Realiza la corrección fina final del informe y del mail; aprueba y envía manualmente.",
+    "acciones_prohibidas": [
+      "Modificar el MASTER",
+      "Aprobar cifras",
+      "Enviar correos automáticamente"
+    ]
   }
 }
-

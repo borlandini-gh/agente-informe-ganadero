@@ -1,187 +1,224 @@
 # Registro de decisiones
 
-## 1. Alcance de este documento
+## 1. Alcance final
 
-Este archivo registra las decisiones funcionales, técnicas y de gobierno del agente que transforma un MASTER mensual en tres borradores de correo. Se separa del README para que el proceso de diseño pueda auditarse sin mezclarlo con las instrucciones de uso.
+El proyecto anterior preparaba tres mails. Para el trabajo final se eligió un problema más completo y acotado: preparar y controlar el informe mensual Ganadero desde el MASTER hasta Canva, más el borrador de su mail.
 
-La versión pública reemplaza por alias los nombres reales de la empresa, los fondos, las series, los archivos y las hojas. Los MASTER reales no forman parte del repositorio.
+La reducción a un solo informe permitió ejecutar el flujo con archivos reales, identificar fallas de integración y conservar evidencia. No se presentan como terminadas las variantes de otros productos.
 
-## 2. Decisiones funcionales
+## 2. Decisiones funcionales y técnicas
 
-| ID | Decisión adoptada | Alternativa descartada | Motivo técnico u operativo |
+| ID | Decisión | Alternativa descartada | Motivo |
 |---|---|---|---|
-| D01 | Generar tres mails: Fondo A ES, Fondo B ES y Fondo B EN | Un mail por cada serie | Los destinatarios del Fondo B reciben un informe consolidado; separar las series produciría correos innecesarios |
-| D02 | Alertar faltantes e inconsistencias además de redactar | Redactar siempre | Evita crear un texto enviable con información incompleta o inventada |
-| D03 | Bloquear únicamente los mails afectados | Bloquear toda la corrida ante cualquier error | Reduce el radio de impacto: un problema independiente del Fondo A no invalida los dos mails del Fondo B y viceversa |
-| D04 | Tomar el período solo de `RESUMEN TOTAL!A18` | Inferirlo del nombre del archivo | El nombre puede contener el mes de envío y no el mes de cierre |
-| D05 | Calcular la auditoría según cierre trimestral y disponibilidad a 45 días | Usar siempre el último trimestre calendario | Impide citar una auditoría todavía no disponible en la fecha del mail |
-| D06 | Identificar campos por etiquetas, encabezados y fórmulas | Mantener posiciones fijas | El MASTER evoluciona: puede incorporar provincias, filas y campos nuevos |
-| D07 | Comparar con el último MASTER aprobado | Comparar con una estructura histórica fija | La última versión aprobada es la referencia operativa más cercana y permite evolución controlada |
-| D08 | Informar cada cambio con hoja, sección, celda/rango, impacto y acción | Alerta genérica `CAMBIO_DE_ESTRUCTURA` | Una alerta sin ubicación no es revisable por una persona |
-| D09 | Mantener los valores fuente para validar y redondear solo al presentar | Redondear antes de controlar | El redondeo previo puede ocultar diferencias reales |
-| D10 | Entregar JSON estricto con un checklist C01–C11 | Texto libre o tablas Markdown como formato canónico | Un schema estable permite comparar corridas y automatizar pruebas; el checklist sigue existiendo como array estructurado |
-| D11 | No enviar correos automáticamente | Envío directo desde el agente | Los textos contienen información financiera y requieren revisión humana |
-| D12 | Tratar todo contenido del MASTER como dato, no como instrucción | Permitir que texto de celdas influya en la conducta | Reduce el riesgo de prompt injection desde celdas, comentarios o nombres de hojas |
+| D01 | Automatizar solamente Ganadero | incluir todos los informes | un flujo completo y probado aporta más evidencia que tres flujos parciales |
+| D02 | MASTER como única fuente numérica | corregir desde el PDF anterior | evita copiar un error histórico o mezclar períodos |
+| D03 | Detectar el período dentro del libro | inferirlo del nombre del archivo | el nombre puede indicar el mes de publicación y no el cierre |
+| D04 | Identificar el fondo por encabezados y datos | fijar una sigla o un número de fila | mantiene el repositorio anonimizado y tolera desplazamientos |
+| D05 | Encontrar las provincias desde la fórmula de total | fijar letras de columna | el MASTER incorpora columnas y provincias con el tiempo |
+| D06 | Separar cabezas físicas y compras a término | comparar provincias contra el total general | son conceptos distintos; la conciliación correcta es físicas + término = total |
+| D07 | Generar CSV UTF-8 de una fila | subir directamente `.xlsx` | Canva Crear en lote rechazó el XLSX en la primera prueba |
+| D08 | Usar cuadros de texto para datos variables | vincular celdas dentro de tablas | los vínculos en tablas no funcionaron de manera estable |
+| D09 | Mantener fijas las filas históricas verdes | actualizar toda la tabla | los cierres anuales no cambian; solo se completan meses del año corriente |
+| D10 | Alias invisibles para meses futuros | colocar ceros o texto visible | Canva debe descubrir el tag sin mostrar información inexistente |
+| D11 | Fotografía manual | seleccionar o posicionar una imagen automáticamente | la foto cambia cada mes y su elección es una decisión editorial de Cati |
+| D12 | Mail con plantilla cerrada | texto libre | reduce variaciones y facilita la corrección de Cachu |
+| D13 | Sin envío automático | integrar correo | el informe contiene información financiera y requiere aprobación humana |
+| D14 | Dependencias JavaScript exactas | crear `requirements.txt` artificial | el proyecto usa Node; el equivalente correcto es `package.json` exacto y lockfile |
+| D15 | Revisión generativa opcional y posterior a los controles | permitir que el modelo extraiga o decida cifras | las cifras requieren determinismo; el modelo solo revisa el borrador y Cachu mantiene la firma |
+| D16 | Controles binarios con evidencia | inventar un puntaje de confianza numérico | las conciliaciones son verificables; una probabilidad subjetiva ocultaría un faltante en vez de bloquearlo |
+| D17 | Acotar la lectura a 5.000 filas y 256 columnas por hoja | confiar ciegamente en el rango declarado por Excel | el MASTER siguiente tenía formato residual hasta la fila 1.048.573; el límite evita consumo excesivo sin afectar el rango operativo |
 
-### Qué se achicó y por qué
+## 3. Iteraciones reales
 
-Durante el diseño se redujo deliberadamente el alcance:
+### Iteración 1 — formato de intercambio
 
-- **No realiza un control contable integral.** Verifica solamente los campos que alimentan los mails; ampliar el control requeriría reglas contables y responsables adicionales.
-- **No envía correos.** El envío se eliminó del alcance porque aumenta el impacto de un error y exige confirmar destinatarios.
-- **No corrige el MASTER.** Detecta y ubica problemas, pero la modificación queda en manos de la persona responsable.
-- **No interpreta todos los campos nuevos de `Establecimientos`.** Los registra como evolución para uso futuro, pero no los incorpora a los mails sin una decisión de alcance.
-- **No consulta fuentes externas.** La única fuente numérica es el MASTER; esto mejora trazabilidad y evita mezclar períodos.
+**Entrada.** MASTER real de cierre 31/07/2026.
 
-El objetivo final quedó acotado a leer, controlar, alertar y redactar. Esa reducción permite sostener un máximo de autonomía L1.
+**Salida.** Se preparó un `.xlsx` para cargar en Canva.
 
-## 3. Iteraciones pedagógicas
+**Falla observada.** Canva mostró: `Error al subir el archivo. Asegurate de estar subiendo un archivo CSV y probá de nuevo.`
 
-### Iteración 1 — pieza modificada: Restricciones
+**Pieza modificada.** Formato.
 
-**Antes.** La versión 1 fijaba provincias en J:R y el total en S. En el MASTER con cierre 28/02/2026, las provincias estaban en J:Q, R contenía `SUM(J:Q)` y S era otra columna residual. La primera corrida devolvió, entre otros errores, `Suma J:R = 8.826; S6 = 740` y bloqueó los tres mails.
+**Cambio.** El agente pasó a generar CSV UTF-8 de una única fila.
 
-**Cambio.** Se modificó únicamente la pieza **Restricciones**: lectura semántica, bloque dinámico de provincias, identificación del total por fórmula, exclusión de columnas posteriores y reglas de evolución compatible/incompatible.
+**Métrica.** 0 campos detectados en v1.
 
-**Después.** Con el mismo MASTER, la segunda corrida identificó J:Q como provincias y R como total. C05–C09 pasaron a `OK` y los tres mails quedaron `LISTO_PARA_REVISION`.
+### Iteración 2 — compatibilidad del template
 
-### Iteración 2 — pieza modificada: Formato
+**Entrada.** El mismo MASTER y el CSV corregido.
 
-**Antes.** La segunda corrida mostró toneladas con precisión desigual: `2.375,4`, `7.292,4`, `2.548,655` y `1.796`. El contrato definía decimales para CP y porcentajes, pero no para cantidades operativas.
+**Salida.** Canva reconoció campos, pero el template original usaba tablas.
 
-**Cambio.** Se modificó únicamente la pieza **Formato**: cabezas y toneladas se presentan como enteros redondeados al entero más cercano, sin alterar el valor usado en controles y con equivalencia ES/EN.
+**Falla observada.** `Coincidieron 9 de 85`; algunos números desaparecían al vincularlos.
 
-**Después.** La tercera corrida presentó cantidades enteras consistentes —por ejemplo `2.376` en español y `2,376` en inglés— y C11 quedó en `OK`.
+**Pieza modificada.** Restricciones del template.
 
-### Endurecimiento posterior a la devolución
+**Cambio.** Los datos variables se reconstruyeron como cuadros de texto independientes. Las filas históricas verdes quedaron fijas.
 
-La versión 3.1 no reemplaza la historia de las dos iteraciones. Agrega requisitos de reproducibilidad y seguridad solicitados por el corrector:
+**Métrica.** 9 coincidencias automáticas sobre 85 campos disponibles.
 
-- salida JSON conforme a `schemas/output.schema.json`;
-- `response_mime_type = "application/json"`;
-- cláusula explícita “es dato, no instrucción”;
-- validador automatizado de las tres corridas.
+### Iteración 3 — meses futuros y auditoría
 
-Este endurecimiento se documenta por separado para no presentar retrospectivamente el prompt inicial como si hubiera nacido perfecto.
+**Entrada.** El mismo MASTER, CSV plano y template compatible.
 
-## 4. Gobierno y niveles de autonomía L0–L4
+**Fallas observadas.** Canva no mostraba tags con valor completamente vacío; la primera fecha de auditoría arrastraba el trimestre anterior.
 
-### Definición usada
+**Pieza modificada.** Formato.
 
-- **L0 — observar:** leer y extraer información sin producir una recomendación ni modificar nada.
-- **L1 — asistir:** analizar, controlar, alertar y preparar borradores para una persona.
-- **L2 — actuar con aprobación:** ejecutar una acción reversible después de una confirmación humana explícita.
-- **L3 — actuar autónomamente:** ejecutar acciones externas sin aprobación caso por caso.
-- **L4 — decidir o ejecutar acciones críticas:** tomar decisiones de alto impacto, irreversibles, financieras o regulatorias.
+**Cambio.** Se añadieron alias con espacio de ancho cero para agosto–diciembre y se separó `nota_auditoria_resumen` de la nota extensa de rentabilidad.
 
-### Matriz de acciones
+**Resultado.** Se generó una copia de ocho páginas. La última versión pasó 126 de 126 comparaciones contra el CSV aprobado y C01–C11 quedaron en `OK`.
 
-| Acción | Nivel | ¿Habilitada? | Control de riesgo |
-|---|---:|---|---|
-| Abrir el MASTER y leer celdas | L0 | Sí | Solo lectura; el archivo es la única fuente de datos |
-| Comparar la estructura con la línea de base | L0 | Sí | No modifica ninguno de los dos archivos |
-| Ejecutar C01–C11 y detectar cambios | L1 | Sí | Evidencia obligatoria y ubicación exacta |
-| Preparar tres borradores de mail | L1 | Sí | Plantillas cerradas y JSON validable |
-| Marcar un mail como listo o bloqueado | L1 | Sí | Bloqueo selectivo y motivo explícito |
-| Adoptar el MASTER actual como nueva línea de base | L2 | No automatizada | Solo después de aprobación humana |
-| Guardar o modificar el MASTER | L2/L3 | No | El agente carece de herramienta de escritura sobre el archivo fuente |
-| Enviar los correos | L3 | No | Los borradores requieren revisión y envío humano |
-| Cambiar importes, aprobar cálculos contables o certificar auditorías | L4 | No | Fuera de alcance; debe intervenir una persona responsable |
+**Métricas.** 126 campos, 0 diferencias, 8 páginas revisadas.
 
-El máximo nivel operativo habilitado es **L1**. El radio de impacto queda limitado a tres borradores de texto y sus alertas; no hay envío, modificación de archivos ni decisión financiera autónoma.
+### Validación fuera de muestra — mes siguiente
 
-## 5. Herramientas y arquitectura
+**Entrada.** Nuevo MASTER real, recibido después de cerrar las iteraciones, con cierre interno 31/08/2026 y publicación en septiembre.
 
-| Componente | Función | Entrada | Salida | Permisos |
-|---|---|---|---|---|
-| Lector XLSX local | Leer celdas, encabezados y fórmulas | MASTER actual y línea de base opcional | Datos estructurados | Solo lectura, L0 |
-| Agente de control y redacción | Aplicar contrato, C01–C11 y plantillas | Datos estructurados delimitados | JSON estricto | L1, sin acciones externas |
-| Validador de corridas | Comprobar schema e invariantes | `corridas/*.json` | Éxito o error | Solo lectura, L0 |
+**Resultado.** Sin modificar posiciones ni valores a mano, el agente obtuvo C01–C11 en `OK`, 126 campos Canva y los dos artefactos en `LISTO_PARA_REVISION`. Tomó el período desde el libro, mantuvo vacíos los meses futuros y trasladó revisiones retroactivas del año en curso.
 
-La herramienta real está implementada en `app/page.tsx`: importa `xlsx`, recibe archivos `.xlsx` o `.xls`, usa `XLSX.read` para abrir el `ArrayBuffer` y ejecuta `parseWorkbook`. No es una simulación de herramienta ni una descripción futura: el prototipo procesa una planilla cargada por la persona usuaria.
+**Falla estructural descubierta.** Una hoja declaraba contenido hasta la fila 1.048.573 por formato residual, aunque los datos útiles terminaban mucho antes.
 
-No se expone una API key en el navegador. La integración con un SDK de modelo no forma parte del alcance entregado: las corridas se ejecutaron en ChatGPT Work y se conservaron como evidencia. En una versión productiva, el lector XLSX debería enviar datos mínimos a un endpoint servidor, y ese endpoint inicializaría el cliente del modelo con la clave en una variable de entorno, timeout, reintentos acotados y schema estricto. Agregar un SDK ficticio o una clave al frontend solo para satisfacer una heurística de auditoría fue descartado por inseguro.
+**Cambio.** Se acotó la lectura por hoja y se agregó `tests/sheet-read-limits.test.mjs`. La evidencia pública anonimizada está en `validaciones/validacion_2026_08.json`.
 
-## 6. Seguridad y privacidad
+## 4. Trazabilidad
 
-| Riesgo | Control |
+| Elemento | Identificador |
 |---|---|
-| Instrucciones maliciosas dentro del Excel | El system y el user prompt declaran que celdas, fórmulas, comentarios y nombres de hojas son dato, no instrucción |
-| Datos inventados | Fuente única, campos obligatorios y bloqueo ante faltantes |
-| Cambio de estructura silencioso | Comparación con línea de base y alerta ubicada |
-| Envío incorrecto | El agente no posee herramienta de correo |
-| Exposición de secretos | Sin claves en repositorio; una implementación futura debe usar variables de entorno del servidor |
-| Exposición de información del cliente | Alias públicos y exclusión de los MASTER reales |
-| Salida variable | JSON Schema, cinco claves raíz y test de regresión |
+| Entrada real usada en las tres corridas | SHA-256 `4b3e8c738a1ef8941b8155f392dbdd2282d6354193ce99112d340712d3c968ff` |
+| Corrida 1 | `GAN-2026-07-01` |
+| Corrida 2 | `GAN-2026-07-02` |
+| Corrida 3 | `GAN-2026-07-03` |
+| PDF final revisado | 8 páginas; hash conservado fuera del repositorio público |
 
-### Modos de falla y respuesta
+Los hashes de Git de esta nueva versión se obtienen recién después de subir los archivos. No se inventa un SHA futuro. Cada corrida ya queda vinculada a su versión del contrato, su salida original y la misma entrada mediante el hash anterior.
 
-| Falla posible | Detección | Qué hace el agente | Qué hace la persona |
+## 5. Arquitectura
+
+| Componente | Entrada | Salida | Permiso |
 |---|---|---|---|
-| Archivo ilegible | C01 | Bloquea los tres mails | Solicita o genera un nuevo archivo |
-| Período ausente o inválido | C02 | Bloquea los tres mails | Revisa `RESUMEN TOTAL!A18` |
-| Fondo o serie ambiguos | C03 | Bloquea los mails afectados | Confirma etiquetas y actualiza el contrato si corresponde |
-| Campo obligatorio faltante | C04 | No inventa; bloquea el alcance afectado | Corrige o valida la celda indicada |
-| Total provincial inconsistente | C05–C09 | Bloqueo selectivo | Reconcilia provincias y total físico |
-| Auditoría no disponible | C10 | No adelanta la fecha; bloquea | Confirma el cierre auditado aplicable |
-| Diferencia de idioma o formato | C11 | No libera el mail inconsistente | Revisa equivalencia ES/EN y precisión |
-| Cambio estructural incompatible | Alerta ubicada | Bloquea el alcance afectado | Redefine el mapeo y aprueba una nueva línea de base |
-| JSON inválido | Schema/test | La salida no se utiliza | Repite la corrida y ejecuta el validador |
+| `xlsx` | MASTER `.xlsx` o `.xls` | datos, fórmulas y fechas | solo lectura, L0 |
+| `ganadero-agent.mjs` | libro abierto | C01–C11, campos y mail | análisis y borradores, L1 |
+| `generar-ganadero.mjs` | ruta al MASTER | JSON, CSV y TXT | escritura solo en carpeta de salida |
+| `model-reviewer.mjs`, opcional | datos ya controlados y borrador | revisión JSON cerrada | una iteración, L1 |
+| Canva Crear en lote | CSV aprobado | copia del template | acción de Cati con revisión |
+| `validar_corridas.mjs` | evidencia pública | éxito o error | solo lectura, L0 |
+| `sheet-read-limits.test.mjs` | rangos de hoja extremos | éxito o error | solo lectura, L0 |
 
-### Punto de supervisión y firma
+La extracción es determinística. El modelo no decide cifras ni celdas. Los prompts formalizan el contrato y el camino operativo mensual no necesita enviar el MASTER a una API. Si se activa la revisión opcional, solo se transmiten los datos estructurados necesarios y el borrador después de C01–C11.
 
-Antes de aprobar una corrida, Bianca Orlandini revisa período, auditoría, valores financieros, cantidades operativas, provincias, alertas y equivalencia ES/EN. Ella firma la conformidad operativa de la salida; el agente solo asiste en L1. Un colaborador puede cargar el MASTER y preparar los borradores, pero no los envía ni firma salvo delegación expresa.
+El revisor usa salida estructurada estricta, `max_output_tokens=1000`, entrada máxima de 20.000 caracteres, una sola iteración, tres intentos HTTP, `timeout` y tope total. Ante 429/503 respeta `Retry-After` o aplica backoff exponencial con jitter; otros errores no se reintentan.
 
-## 7. Análisis económico
+## 6. Autonomía L0–L4
 
-### Arquitectura tomada para el cálculo
+### Definiciones
 
-El Excel se parsea localmente y el modelo recibe solo datos estructurados necesarios para C01–C11 y los mails. Para un despliegue económico se toma como referencia `gpt-5.6-luna`, porque la tarea está altamente restringida, tiene plantillas, schema y revisión humana; no necesita el modelo de mayor costo.
+- **L0 — observar:** leer y extraer sin cambiar datos.
+- **L1 — asistir:** controlar, alertar y preparar artefactos para una persona.
+- **L2 — actuar con aprobación:** cambiar una referencia o estructura después de una autorización explícita.
+- **L3 — actuar sin aprobación caso por caso:** modificar o enviar externamente.
+- **L4 — decidir o certificar:** aprobar cifras, auditorías o decisiones financieras.
 
-Precios estándar consultados el 03/09/2026 en la documentación oficial de OpenAI:
+### Matriz
 
-- entrada: USD 0,20 por 1 millón de tokens;
-- entrada cacheada: USD 0,02 por 1 millón de tokens;
-- salida: USD 1,20 por 1 millón de tokens.
+| Acción | Nivel | ¿Habilitada? | Responsable final |
+|---|---:|---|---|
+| abrir y leer el MASTER | L0 | sí | agente |
+| detectar estructura y ejecutar C01–C11 | L1 | sí | agente; revisa Cati |
+| generar CSV y mail | L1 | sí, si no hay bloqueos | revisan Cati y Cachu |
+| ajustar diseño o fotografía | L2 | solo manual | Cati |
+| adoptar nuevos tags o una nueva línea de base | L2 | solo con aprobación | responsable del proceso |
+| modificar el MASTER | L3 | no | Administración |
+| enviar el mail | L3 | no | Cachu |
+| certificar la auditoría o aprobar cifras | L4 | no | responsables humanos |
 
-Fuente: <https://developers.openai.com/api/docs/pricing>
+El agente queda limitado a L1. Un `OK` habilita revisión, no publicación.
 
-### Fórmula
+## 7. Segregación de funciones
 
-`Costo por corrida = (tokens de entrada / 1.000.000 × precio de entrada) + (tokens de entrada cacheada / 1.000.000 × precio cacheado) + (tokens de salida / 1.000.000 × precio de salida)`
+| Momento | Responsable | Control |
+|---|---|---|
+| preparación del dato fuente | Administración | consensúa el MASTER antes de compartirlo |
+| generación técnica | agente | extrae, reconcilia y bloquea |
+| revisión visual | Cati | compara Canva contra el MASTER y cambia la foto |
+| corrección fina y firma | Cachu | revisa PDF y mail; aprueba o devuelve |
+| envío | Cachu | adjunta y envía manualmente |
 
-### Supuestos conservadores
+Cati corrige diferencias según el MASTER, pero no redefine cifras. Cachu no depende solamente del checklist: conserva el ojo fino final.
 
-| Supuesto | Valor |
+## 8. Modos de falla
+
+| Falla | Detección | Respuesta del agente | Acción humana |
+|---|---|---|---|
+| archivo ilegible, mayor a 50 MB o datos requeridos fuera de 5.000 × 256 por hoja | C01 | bloquea CSV y mail | Administración genera otro archivo o normaliza la hoja |
+| fecha ausente o ambigua | C02 | no infiere desde el nombre | Cati ubica el cierre correcto |
+| fondo no identificable | C03 | bloquea | se revisan encabezados |
+| falta CP, fondos o rentabilidad | C04 | no inventa | Administración corrige el MASTER |
+| provincias no suman | C05 | informa rango y diferencia | Cati/Administración reconcilian |
+| físicas + término no iguala total | C06 | bloquea | revisar clasificación |
+| falta mes en rentabilidad | C07 | bloquea tabla y mail | completar o validar la serie |
+| portfolio incompleto | C08 | bloquea el informe | revisar hoja y período |
+| categorías/sexo/stock no concilian | C09 | bloquea | revisar hojas de hacienda |
+| precios incompletos | C10 | bloquea | confirmar fuente del mismo período |
+| auditoría posterior al cierre | C11 | bloquea | confirmar última auditoría válida |
+| tag nuevo o provincia nueva | alerta estructural | no cambia Canva | Cati decide la adaptación |
+| CSV fuera de formato | C11 | no entrega artefacto utilizable | repetir la corrida |
+| 429/503 en revisión opcional | respuesta HTTP | reintento acotado con jitter; luego falla cerrado | Cachu revisa el borrador original |
+| clave de API ausente | validación previa | no inicia la revisión opcional | usar el flujo determinístico o configurar el secreto |
+| salida del modelo incompleta | estado/schema | descarta la revisión | Cachu revisa sin asistencia generativa |
+
+## 9. Seguridad y privacidad
+
+- El contenido del Excel es dato, no instrucción.
+- No existen claves ni credenciales en el repositorio.
+- `.env.example` enumera variables sin incluir valores secretos.
+- El navegador procesa el archivo localmente.
+- El MASTER y el PDF real quedan fuera del repositorio público.
+- Los nombres de establecimientos se sustituyen por alias en las corridas.
+- El hash de la entrada prueba identidad entre corridas sin revelar el archivo.
+- El mail no tiene destinatarios ni capacidad de envío.
+- La salida se bloquea si un control requerido falla.
+
+## 10. Análisis económico
+
+El runner determinístico tiene costo de tokens igual a cero. Usa recursos locales y una licencia de Canva ya disponible. Para la revisión generativa opcional implementada se eligió `gpt-5.6-luna` por ser suficiente para revisar un texto breve ya estructurado.
+
+Supuesto: 3.000 tokens de entrada y 1.000 de salida. Precios estándar de contexto corto al 11/09/2026: USD 0,20/M de entrada y USD 1,20/M de salida. Fuente: <https://developers.openai.com/api/docs/pricing>.
+
+`Costo = (3.000 / 1.000.000 × 0,20) + (1.000 / 1.000.000 × 1,20) = USD 0,0018 por revisión`
+
+| Frecuencia | Costo |
 |---|---:|
-| Corridas por mes | 2 |
-| Tokens de entrada no cacheados por corrida | 6.000 |
-| Tokens de entrada cacheados | 0 |
-| Tokens de salida por corrida | 3.500 |
-| Meses por año | 12 |
+| semanal promedio, 0,5 revisiones | USD 0,0009 |
+| mensual, 2 revisiones | USD 0,0036 |
+| anual, 24 revisiones | USD 0,0432 |
+| sensibilidad, 10 revisiones mensuales | USD 0,0180/mes |
 
-### Resultado estimado
+No se cuantifica un ahorro de tiempo sin mediciones previas. El beneficio demostrado es la eliminación de diferencias entre el dataset generado y el CSV aprobado en la tercera corrida.
 
-`Costo por corrida = (6.000 / 1.000.000 × 0,20) + (3.500 / 1.000.000 × 1,20) = USD 0,0054`
+## 11. Alcance reducido
 
-| Frecuencia | Costo estimado |
-|---|---:|
-| Promedio de 0,5 corridas por semana | USD 0,0027 semanales |
-| 2 corridas por mes | USD 0,0108 mensuales |
-| 24 corridas por año | USD 0,1296 anuales |
-| Sensibilidad: 10 corridas por mes | USD 0,054 mensuales |
+Quedan fuera:
 
-El cálculo excluye impuestos, hosting y tiempo de revisión humana. Los precios son supuestos externos y deben actualizarse antes de una implementación real. Si el system prompt se reutiliza con prompt caching, el costo puede ser menor; no se descuenta ese beneficio para mantener una estimación conservadora.
+- informes de otros productos e idiomas;
+- extracción automática desde WhatsApp;
+- selección y ubicación automática de fotografías;
+- envío de mails;
+- modificación del MASTER;
+- aprobación contable o de auditoría;
+- publicación con contraseña.
 
-## 8. Criterios de aceptación
+La página privada con contraseña es una evolución operativa posterior. Para la entrega, el sistema funciona localmente y tiene un comando mensual reproducible.
 
-Una versión se considera aprobable si:
+## 12. Criterios de aceptación
 
-1. existen `README.md`, `DECISIONES.md`, `prompts/system_prompt.md`, `prompts/user_prompt.md`, `corridas/` y `schemas/output.schema.json`;
-2. cada corrida identifica fecha, entrada, salida y versión del contrato; las salidas originales permanecen en `corridas/originales/`;
-3. las tres corridas son JSON válido y tienen las mismas cinco claves raíz;
-4. C01–C11 aparecen exactamente una vez y en orden;
-5. los mails bloqueados no contienen asunto ni cuerpo;
-6. todo cambio estructural contiene ubicación, impacto y acción;
-7. no hay nombres reales ni secretos del cliente;
-8. `node tests/validar_corridas.mjs` finaliza correctamente.
+1. existen los cinco archivos/rutas obligatorios en la raíz;
+2. `npm test` valida las tres corridas y salidas originales;
+3. `package.json` y el lockfile fijan dependencias;
+4. C01–C11 aparecen una vez y en orden;
+5. un artefacto bloqueado no contiene salida utilizable;
+6. la corrida final contiene 126 campos y 0 diferencias registradas;
+7. Cati y Cachu aparecen como revisores con responsabilidades diferentes;
+8. ningún identificador real ni secreto aparece en los archivos públicos.
+9. los tests verifican límites y reintentos del revisor opcional sin requerir una clave ni realizar consumos.

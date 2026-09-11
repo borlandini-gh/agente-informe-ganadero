@@ -1,0 +1,35 @@
+{
+  "id": "GAN-2026-08-FUERA-DE-MUESTRA",
+  "fecha_ejecucion": "2026-09-11T18:00:00.000Z",
+  "entrada": {
+    "tipo": "MASTER_XLSX_REAL",
+    "periodo_interno": "2026-08-31",
+    "mes_publicacion": "septiembre 2026",
+    "sha256": "41885860ffaec778fc2127f68fb73130c6f58e58b8175d2f824dba041f9960cc",
+    "archivo_publicado": false
+  },
+  "resultado": {
+    "controles_ok": 11,
+    "controles_error": 0,
+    "campos_canva": 126,
+    "canva": "LISTO_PARA_REVISION",
+    "mail_ganadero": "LISTO_PARA_REVISION",
+    "meses_futuros_vacios": true,
+    "auditoria_hasta": "2026-06-30",
+    "periodo_tomado_desde_el_libro": true,
+    "revisiones_retroactivas_trasladadas": true
+  },
+  "hallazgo_estructural": {
+    "tipo": "RANGO_DECLARADO_EXTREMO_POR_FORMATO_RESIDUAL",
+    "fila_final_declarada": 1048573,
+    "limite_lectura_filas": 5000,
+    "limite_lectura_columnas": 256,
+    "datos_utiles_recortados": false,
+    "prueba_regresion": "tests/sheet-read-limits.test.mjs"
+  },
+  "privacidad": {
+    "cifras_publicadas": false,
+    "nombres_reales_publicados": false,
+    "master_incluido": false
+  }
+}
