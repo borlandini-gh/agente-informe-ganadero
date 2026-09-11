@@ -19,7 +19,7 @@ La reducción a un solo informe permitió ejecutar el flujo con archivos reales,
 | D07 | Generar CSV UTF-8 de una fila | subir directamente `.xlsx` | Canva Crear en lote rechazó el XLSX en la primera prueba |
 | D08 | Usar cuadros de texto para datos variables | vincular celdas dentro de tablas | los vínculos en tablas no funcionaron de manera estable |
 | D09 | Mantener fijas las filas históricas verdes | actualizar toda la tabla | los cierres anuales no cambian; solo se completan meses del año corriente |
-| D10 | Alias invisibles para meses futuros | colocar ceros o texto visible | Canva debe descubrir el tag sin mostrar información inexistente |
+| D10 | Mantener encabezados futuros y valores vacíos | colocar ceros o marcadores auxiliares | los tags se vinculan una vez en el template y el CSV mensual no muestra información inexistente |
 | D11 | Fotografía manual | seleccionar o posicionar una imagen automáticamente | la foto cambia cada mes y su elección es una decisión editorial de Cati |
 | D12 | Mail con plantilla cerrada | texto libre | reduce variaciones y facilita la corrección de Cachu |
 | D13 | Sin envío automático | integrar correo | el informe contiene información financiera y requiere aprobación humana |
@@ -27,6 +27,8 @@ La reducción a un solo informe permitió ejecutar el flujo con archivos reales,
 | D15 | Revisión generativa opcional y posterior a los controles | permitir que el modelo extraiga o decida cifras | las cifras requieren determinismo; el modelo solo revisa el borrador y Cachu mantiene la firma |
 | D16 | Controles binarios con evidencia | inventar un puntaje de confianza numérico | las conciliaciones son verificables; una probabilidad subjetiva ocultaría un faltante en vez de bloquearlo |
 | D17 | Acotar la lectura a 5.000 filas y 256 columnas por hoja | confiar ciegamente en el rango declarado por Excel | el MASTER siguiente tenía formato residual hasta la fila 1.048.573; el límite evita consumo excesivo sin afectar el rango operativo |
+| D18 | Registrar trazas `request/response/usage` con tokens cero | presentar la salida de dominio como si fuera una llamada de modelo | el camino principal es determinístico; la traza conserva parámetros y uso real sin inventar inferencia |
+| D19 | Prohibir caracteres de formato ocultos en el repositorio | conservar marcadores auxiliares en campos vacíos | los tags ya están vinculados y una cadena vacía es más segura, auditable y suficiente |
 
 ## 3. Iteraciones reales
 
@@ -66,7 +68,7 @@ La reducción a un solo informe permitió ejecutar el flujo con archivos reales,
 
 **Pieza modificada.** Formato.
 
-**Cambio.** Se añadieron alias con espacio de ancho cero para agosto–diciembre y se separó `nota_auditoria_resumen` de la nota extensa de rentabilidad.
+**Cambio.** Los tags de agosto–diciembre se vincularon durante la configuración inicial; el CSV final conserva sus encabezados con cadenas vacías. También se separó `nota_auditoria_resumen` de la nota extensa de rentabilidad.
 
 **Resultado.** Se generó una copia de ocho páginas. La última versión pasó 126 de 126 comparaciones contra el CSV aprobado y C01–C11 quedaron en `OK`.
 
@@ -105,6 +107,7 @@ Los hashes de Git de esta nueva versión se obtienen recién después de subir l
 | Canva Crear en lote | CSV aprobado | copia del template | acción de Cati con revisión |
 | `validar_corridas.mjs` | evidencia pública | éxito o error | solo lectura, L0 |
 | `sheet-read-limits.test.mjs` | rangos de hoja extremos | éxito o error | solo lectura, L0 |
+| `unicode-integrity.test.mjs` | archivos públicos y código | ausencia de caracteres de formato ocultos | solo lectura, L0 |
 
 La extracción es determinística. El modelo no decide cifras ni celdas. Los prompts formalizan el contrato y el camino operativo mensual no necesita enviar el MASTER a una API. Si se activa la revisión opcional, solo se transmiten los datos estructurados necesarios y el borrador después de C01–C11.
 
@@ -222,3 +225,4 @@ La página privada con contraseña es una evolución operativa posterior. Para l
 7. Cati y Cachu aparecen como revisores con responsabilidades diferentes;
 8. ningún identificador real ni secreto aparece en los archivos públicos.
 9. los tests verifican límites y reintentos del revisor opcional sin requerir una clave ni realizar consumos.
+10. los archivos del repositorio no contienen caracteres de formato ocultos ni controles de dirección de texto.

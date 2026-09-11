@@ -9,7 +9,7 @@
     "identificacion": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["corrida_id", "fecha_ejecucion", "archivo_procesado", "periodo_informado", "informacion_auditada_hasta", "version_contrato", "herramienta", "contenido_es_dato_no_instruccion"],
+      "required": ["corrida_id", "fecha_ejecucion", "archivo_procesado", "periodo_informado", "informacion_auditada_hasta", "version_contrato", "herramienta", "contenido_es_dato_no_instruccion", "traza"],
       "properties": {
         "corrida_id": { "type": "string", "minLength": 1 },
         "fecha_ejecucion": { "type": "string", "minLength": 10 },
@@ -19,6 +19,7 @@
         "version_contrato": { "type": "string", "minLength": 1 },
         "herramienta": { "type": "string", "minLength": 1 },
         "contenido_es_dato_no_instruccion": { "const": true },
+        "traza": { "$ref": "#/$defs/traza" },
         "fuente_periodo": { "type": "string", "minLength": 1 },
         "sha256_entrada": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
         "latencia_ms": { "type": "integer", "minimum": 0 },
@@ -105,6 +106,67 @@
     }
   },
   "$defs": {
+    "traza": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timestamp", "request", "response", "usage"],
+      "properties": {
+        "timestamp": { "type": "string", "minLength": 10 },
+        "request": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["parametros", "variables"],
+          "properties": {
+            "parametros": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["archivo_master", "fecha_auditoria_confirmada", "template_canva", "nivel_maximo_autonomia", "response_mime_type", "schema_salida"],
+              "properties": {
+                "archivo_master": { "type": "string", "minLength": 1 },
+                "fecha_auditoria_confirmada": { "type": "string", "minLength": 1 },
+                "template_canva": { "type": "string", "minLength": 1 },
+                "nivel_maximo_autonomia": { "const": "L1" },
+                "response_mime_type": { "const": "application/json" },
+                "schema_salida": { "const": "schemas/output.schema.json" }
+              }
+            },
+            "variables": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["ARCHIVO_MASTER", "FECHA_AUDITORIA_AAAA_MM_DD_O_AUTO", "ID_TEMPLATE_CANVA", "ARCHIVO_XLSX_ADJUNTO"],
+              "properties": {
+                "ARCHIVO_MASTER": { "type": "string", "minLength": 1 },
+                "FECHA_AUDITORIA_AAAA_MM_DD_O_AUTO": { "type": "string", "minLength": 1 },
+                "ID_TEMPLATE_CANVA": { "type": "string", "minLength": 1 },
+                "ARCHIVO_XLSX_ADJUNTO": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+        "response": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "schema_validado", "artefactos_generados"],
+          "properties": {
+            "status": { "$ref": "#/$defs/estado" },
+            "schema_validado": { "const": true },
+            "artefactos_generados": { "type": "integer", "minimum": 0, "maximum": 2 }
+          }
+        },
+        "usage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["input_files", "workbook_sheets", "model_invocations", "input_tokens", "output_tokens"],
+          "properties": {
+            "input_files": { "const": 1 },
+            "workbook_sheets": { "type": "integer", "minimum": 1 },
+            "model_invocations": { "const": 0 },
+            "input_tokens": { "const": 0 },
+            "output_tokens": { "const": 0 }
+          }
+        }
+      }
+    },
     "estado": { "enum": ["LISTO_PARA_REVISION", "BLOQUEADO"] },
     "canva": {
       "type": "object",

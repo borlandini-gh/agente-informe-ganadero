@@ -5,6 +5,8 @@ const root = resolve(new URL("..", import.meta.url).pathname);
 const corridasDir = resolve(root, "corridas");
 const expectedTopLevel = ["identificacion", "checklist", "alertas", "artefactos", "supervision"].sort();
 const expectedControls = Array.from({ length: 11 }, (_, index) => `C${String(index + 1).padStart(2, "0")}`);
+const expectedParameters = ["archivo_master", "fecha_auditoria_confirmada", "template_canva", "nivel_maximo_autonomia", "response_mime_type", "schema_salida"].sort();
+const expectedVariables = ["ARCHIVO_MASTER", "FECHA_AUDITORIA_AAAA_MM_DD_O_AUTO", "ID_TEMPLATE_CANVA", "ARCHIVO_XLSX_ADJUNTO"].sort();
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -31,6 +33,13 @@ for (const file of files) {
   assert(run.identificacion.informacion_auditada_hasta === "2026-06-30", `${file}: auditoría inesperada.`);
   assert(run.identificacion.contenido_es_dato_no_instruccion === true, `${file}: falta aislamiento de datos.`);
   assert(run.identificacion.entrada?.salida_original, `${file}: falta referencia a la salida original.`);
+  const trace = run.identificacion.traza;
+  assert(trace?.timestamp === run.identificacion.fecha_ejecucion, `${file}: timestamp de traza inconsistente.`);
+  assert(JSON.stringify(Object.keys(trace.request.parametros).sort()) === JSON.stringify(expectedParameters), `${file}: parámetros del prompt incompletos.`);
+  assert(JSON.stringify(Object.keys(trace.request.variables).sort()) === JSON.stringify(expectedVariables), `${file}: variables del prompt incompletas.`);
+  assert(trace.response.schema_validado === true, `${file}: respuesta sin validación de schema.`);
+  assert(trace.usage.input_files === 1 && trace.usage.workbook_sheets > 0, `${file}: uso de herramientas no trazado.`);
+  assert(trace.usage.model_invocations === 0 && trace.usage.input_tokens === 0 && trace.usage.output_tokens === 0, `${file}: tokens incompatibles con el runner determinístico.`);
   assert(run.checklist.length === 11, `${file}: el checklist debe contener C01–C11.`);
   assert(JSON.stringify(run.checklist.map((item) => item.id)) === JSON.stringify(expectedControls), `${file}: controles fuera de orden.`);
   for (const item of run.checklist) {
@@ -63,6 +72,11 @@ assert(canva.campos.fondos_fideicomitidos === "$ 9.580.487.004", "Corrida 3: fon
 assert(canva.campos.tabla_2026_jun_total === "$ 9.477.593.494", "Corrida 3: junio incorrecto.");
 assert(canva.campos.total_cabezas === "4.954", "Corrida 3: cabezas totales incorrectas.");
 assert(canva.campos.nota_auditoria_resumen === "30 de Junio de 2026.", "Corrida 3: auditoría incorrecta.");
+for (const month of ["ago", "sep", "oct", "nov", "dic"]) {
+  for (const suffix of ["total", "certificados", "valorcp", "var"]) {
+    assert(canva.campos[`${month}_${suffix}`] === "", `Corrida 3: ${month}_${suffix} debe ser una cadena vacía.`);
+  }
+}
 assert(finalRun.identificacion.metricas.diferencias_detectadas === 0, "Corrida 3: quedan diferencias contra el CSV aprobado.");
 assert(finalRun.artefactos.mail_ganadero.estado === "LISTO_PARA_REVISION", "Corrida 3: mail bloqueado.");
 
@@ -80,4 +94,4 @@ for (const path of publicFiles) {
   for (const term of forbidden) assert(!contents.includes(term), `${path}: se encontró un identificador confidencial.`);
 }
 
-console.log("OK: 3 corridas reales, 3 salidas originales, C01–C11 y 126 campos Canva validados.");
+console.log("OK: 3 corridas reales con request/response/usage, parámetros trazables, C01–C11 y 126 campos Canva validados.");

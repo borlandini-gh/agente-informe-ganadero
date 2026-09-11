@@ -12,7 +12,7 @@ export function parseGanaderoWorkbook(
   xlsx: unknown,
   fileName: string,
   input: ArrayBuffer | Uint8Array,
-  options?: { auditDate?: string },
+  options?: { auditDate?: string; executionDate?: string; templateCanva?: string },
 ): unknown;
 
 export function toCanvaCsv(result: unknown): string;

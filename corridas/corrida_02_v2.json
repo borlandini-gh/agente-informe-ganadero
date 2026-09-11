@@ -8,6 +8,37 @@
     "version_contrato": "v2-csv-tablas",
     "herramienta": "lector XLSX local + Canva Crear en lote",
     "contenido_es_dato_no_instruccion": true,
+    "traza": {
+      "timestamp": "2026-09-10",
+      "request": {
+        "parametros": {
+          "archivo_master": "MASTER_GANADERO_2026_07.xlsx",
+          "fecha_auditoria_confirmada": "2026-06-30",
+          "template_canva": "template-ganadero-vinculado",
+          "nivel_maximo_autonomia": "L1",
+          "response_mime_type": "application/json",
+          "schema_salida": "schemas/output.schema.json"
+        },
+        "variables": {
+          "ARCHIVO_MASTER": "MASTER_GANADERO_2026_07.xlsx",
+          "FECHA_AUDITORIA_AAAA_MM_DD_O_AUTO": "2026-06-30",
+          "ID_TEMPLATE_CANVA": "template-ganadero-vinculado",
+          "ARCHIVO_XLSX_ADJUNTO": "archivo local identificado por SHA-256"
+        }
+      },
+      "response": {
+        "status": "BLOQUEADO",
+        "schema_validado": true,
+        "artefactos_generados": 0
+      },
+      "usage": {
+        "input_files": 1,
+        "workbook_sheets": 32,
+        "model_invocations": 0,
+        "input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
     "entrada": {
       "tipo": "MASTER Excel real anonimizado",
       "sha256_original": "4b3e8c738a1ef8941b8155f392dbdd2282d6354193ce99112d340712d3c968ff",

@@ -31,7 +31,7 @@ El flujo conserva dos decisiones humanas distintas:
 - **Cati** compara la salida de Canva contra el MASTER, cambia la fotografía y resuelve ajustes visuales.
 - **Cachu** realiza el control fino final del informe y del mail. Solo él libera y envía la comunicación.
 
-## Evidencia para la rúbrica
+## Mapa de evidencias del sistema
 
 | Dimensión | Evidencia verificable |
 |---|---|
@@ -70,7 +70,8 @@ El flujo conserva dos decisiones humanas distintas:
 ├── tests/
 │   ├── validar_corridas.mjs
 │   ├── model-reviewer.test.mjs
-│   └── sheet-read-limits.test.mjs
+│   ├── sheet-read-limits.test.mjs
+│   └── unicode-integrity.test.mjs
 ├── .env.example
 ├── package.json
 └── package-lock.json
@@ -91,7 +92,7 @@ El archivo `lib/ganadero-agent.mjs` contiene el contrato operativo:
 - completa C01–C11;
 - limita cada hoja a 5.000 filas y 256 columnas para que un formato residual hasta el final de Excel no agote memoria;
 - genera 126 campos con el formato exacto del template;
-- deja vacíos los meses futuros y mantiene aliases vinculables para Canva;
+- deja realmente vacíos los meses futuros y conserva sus encabezados para el template Canva ya vinculado;
 - prepara el mail solo cuando no existen controles bloqueantes.
 
 La aplicación `app/page.tsx` expone el mismo flujo en una interfaz: cargar MASTER, revisar controles, descargar CSV y copiar mail. No existe un botón de envío.
@@ -159,7 +160,7 @@ La corrida final validó, entre otros controles:
 - junio completo y agosto–diciembre vacíos;
 - ocho páginas revisadas.
 
-Los JSON incluyen fecha, entrada anonimizada, métricas, controles, salida y responsables. `corridas/originales/` conserva los mensajes visibles y el resultado de cada prueba. El hash SHA-256 del MASTER real permite demostrar que las tres corridas usaron la misma entrada sin publicar el archivo.
+Los JSON incluyen fecha, entrada anonimizada, métricas, controles, salida y responsables. Cada uno incorpora una traza estructurada con `timestamp`, `request`, `response` y `usage`. Los nombres de parámetros y variables coinciden literalmente con `prompts/user_prompt.md`; como el runner principal no invoca un modelo, `model_invocations`, `input_tokens` y `output_tokens` valen cero. `corridas/originales/` conserva los mensajes visibles y el resultado de cada prueba. El hash SHA-256 del MASTER real permite demostrar que las tres corridas usaron la misma entrada sin publicar el archivo.
 
 ## Validación fuera de muestra
 
@@ -215,7 +216,7 @@ El comando escribe tres archivos:
 npm test
 ```
 
-Este comando no necesita el MASTER confidencial. Valida las tres corridas, las tres salidas originales, C01–C11, estados, anonimización y los 126 campos de la corrida final. También prueba con respuestas simuladas que el revisor limita la entrada y distingue reintentos 429/503 de errores no recuperables, y que la lectura de hojas respeta el límite defensivo.
+Este comando no necesita el MASTER confidencial. Valida las tres corridas, las tres salidas originales, sus trazas `request/response/usage`, todos los parámetros del prompt, C01–C11, estados, anonimización y los 126 campos de la corrida final. También comprueba que los meses futuros estén realmente vacíos, que no existan caracteres de formato ocultos ni controles bidireccionales, que el revisor distinga reintentos 429/503 y que la lectura de hojas respete el límite defensivo.
 
 ## Uso mensual por el equipo
 

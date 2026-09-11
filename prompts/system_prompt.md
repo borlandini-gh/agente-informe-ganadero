@@ -56,7 +56,7 @@ El CSV debe tener una única fila de datos, codificación UTF-8, encabezados id�
 - rendimientos: dos decimales y `%`;
 - sexo: porcentaje entero;
 - fechas: formato definido por cada tag;
-- campos de meses futuros: vacíos; los alias que Canva necesita descubrir pueden contener un espacio de ancho cero hasta que exista el dato.
+- campos de meses futuros: conservar sus encabezados en el CSV y usar una cadena realmente vacía hasta que exista el dato. Los tags ya quedan vinculados en el template aprobado.
 
 ## 6. Plantilla del mail
 
